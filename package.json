@@ -1,0 +1,63 @@
+{
+  "name": "extra-dns",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [
+    "dns"
+  ],
+  "files": [
+    "lib"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "repository": "git@github.com:BlackGlory/extra-dns.git",
+  "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "ts-patch install -s",
+    "deduplicate": "yarn-deduplicate",
+    "prepublishOnly": "run-s prepare clean build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
+    "test": "vitest --run --passWithNoTests",
+    "clean": "rimraf lib dist",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "standard-version"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-s prepare clean lint build test",
+      "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@types/dns-packet": "^5.6.5",
+    "@types/node": "18",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "husky": "4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.5",
+    "standard-version": "^9.5.0",
+    "ts-patch": "^3.1.1",
+    "typescript": "^5.3.3",
+    "typescript-transform-paths": "^3.4.6",
+    "vite": "^5.0.10",
+    "vite-tsconfig-paths": "^4.2.2",
+    "vitest": "^1.1.0",
+    "yarn-deduplicate": "^6.0.2"
+  },
+  "dependencies": {
+    "@blackglory/prelude": "^0.4.0",
+    "@blackglory/structures": "^0.14.9",
+    "commander": "^12.1.0",
+    "dns-packet": "^5.6.1",
+    "extra-abort": "^0.4.0",
+    "extra-logger": "^0.7.2",
+    "extra-promise": "^7.0.0"
+  }
+}
