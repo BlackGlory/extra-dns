@@ -81,14 +81,11 @@ export function decodePacket(buffer: ArrayBufferLike): IPacket {
   } = decodeHeader(buffer)
   let byteOffset = newByteOffset
 
-  const messageCompressionDict = new Map<number, string>()
-
   const questions: IQuestion[] = []
   for (let i = 0; i < questionCount; i++) {
     const { question, newByteOffset } = decodeQuestion(
       buffer
     , byteOffset
-    , messageCompressionDict
     )
     questions.push(question)
     byteOffset = newByteOffset
@@ -99,7 +96,6 @@ export function decodePacket(buffer: ArrayBufferLike): IPacket {
     const { resourceRecord, newByteOffset } = decodeResourceRecord(
       buffer
     , byteOffset
-    , messageCompressionDict
     )
     answers.push(resourceRecord)
     byteOffset = newByteOffset
@@ -110,7 +106,6 @@ export function decodePacket(buffer: ArrayBufferLike): IPacket {
     const { resourceRecord, newByteOffset } = decodeResourceRecord(
       buffer
     , byteOffset
-    , messageCompressionDict
     )
     authorityRecords.push(resourceRecord)
     byteOffset = newByteOffset
@@ -121,7 +116,6 @@ export function decodePacket(buffer: ArrayBufferLike): IPacket {
     const { resourceRecord, newByteOffset } = decodeResourceRecord(
       buffer
     , byteOffset
-    , messageCompressionDict
     )
     additionalRecords.push(resourceRecord)
     byteOffset = newByteOffset

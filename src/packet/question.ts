@@ -18,18 +18,13 @@ export function encodeQuestion(
   ])
 }
 
-export function decodeQuestion(
-  buffer: ArrayBufferLike
-, byteOffset: number
-, messageCompressionDict: Map<number, string>
-): {
+export function decodeQuestion(buffer: ArrayBufferLike, byteOffset: number): {
   question: IQuestion
   newByteOffset: number
 } {
   const { domainName: NAME, newByteOffset } = decodeDomainName(
     buffer
   , byteOffset
-  , messageCompressionDict
   )
   byteOffset = newByteOffset
 

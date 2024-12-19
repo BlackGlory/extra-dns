@@ -27,7 +27,6 @@ export function encodeResourceRecord(
 export function decodeResourceRecord(
   buffer: ArrayBufferLike
 , byteOffset: number
-, messageCompressionDict: Map<number, string>
 ): {
   resourceRecord: IResourceRecord
   newByteOffset: number
@@ -35,7 +34,6 @@ export function decodeResourceRecord(
   const { domainName: NAME, newByteOffset } = decodeDomainName(
     buffer
   , byteOffset
-  , messageCompressionDict
   )
   byteOffset = newByteOffset
 
