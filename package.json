@@ -6,6 +6,7 @@
     "dns"
   ],
   "files": [
+    "src",
     "lib"
   ],
   "type": "module",
