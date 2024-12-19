@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/BlackGlory/extra-dns/compare/v0.1.1...v0.1.2) (2024-12-19)
+
+
+### Bug Fixes
+
+* package.json fields ([4588c14](https://github.com/BlackGlory/extra-dns/commit/4588c145a3d1da85cc81d03d1c4aed1dc9410d85))
+
 ### [0.1.1](https://github.com/BlackGlory/extra-dns/compare/v0.1.0...v0.1.1) (2024-12-19)
 
 ## 0.1.0 (2024-12-19)
