@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayLittleEndian, uint32ArrayLittleEndian, readUint16LittleEndian, readUint32LittleEndian } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian } from './utils.js'
 
 export interface IResourceRecord {
   NAME: string // 变长, 用DNS名称表示法表示的域名
@@ -17,9 +17,9 @@ export function encodeResourceRecord(
 ): ArrayBuffer {
   return concatBuffers([
     encodeDomainName(resourceRecord.NAME, byteOffset, messageCompressionDict)
-  , uint16ArrayLittleEndian([resourceRecord.TYPE, resourceRecord.CLASS]).buffer
-  , uint32ArrayLittleEndian([resourceRecord.TTL]).buffer
-  , uint16ArrayLittleEndian([resourceRecord.RDATA.byteLength]).buffer
+  , uint16ArrayBigEndian([resourceRecord.TYPE, resourceRecord.CLASS]).buffer
+  , uint32ArrayBigEndian([resourceRecord.TTL]).buffer
+  , uint16ArrayBigEndian([resourceRecord.RDATA.byteLength]).buffer
   , resourceRecord.RDATA
   ])
 }

@@ -1,10 +1,10 @@
 import { test, expect } from 'vitest'
-import { uint16ArrayLittleEndian, uint32ArrayLittleEndian } from '@src/packet/utils.js'
+import { uint16ArrayBigEndian, uint32ArrayBigEndian } from '@src/packet/utils.js'
 
-test('uint16ArrayLittleEndian', () => {
+test('uint16ArrayBigEndian', () => {
   const array = [1, 2]
 
-  const result = uint16ArrayLittleEndian(array)
+  const result = uint16ArrayBigEndian(array)
 
   expect(new Uint8Array(result.buffer)).toStrictEqual(new Uint8Array([
     0, 1
@@ -12,10 +12,10 @@ test('uint16ArrayLittleEndian', () => {
   ]))
 })
 
-test('uint32ArrayLittleEndian', () => {
+test('uint32ArrayBigEndian', () => {
   const array = [1, 2]
 
-  const result = uint32ArrayLittleEndian(array)
+  const result = uint32ArrayBigEndian(array)
 
   expect(new Uint8Array(result.buffer)).toStrictEqual(new Uint8Array([
     0, 0, 0, 1

@@ -1,5 +1,5 @@
 import { decodeFlags, encodeFlags, IFlags } from './flags.js'
-import { uint16ArrayLittleEndian, readUint16LittleEndian } from './utils.js'
+import { uint16ArrayBigEndian, readUint16LittleEndian } from './utils.js'
 
 export interface IHeader {
   ID: number // 2 bytes, 16 bits
@@ -17,7 +17,7 @@ export function encodeHeader(
 , authorityRecordsCount: number
 , additionalRecordsCount: number
 ): ArrayBuffer {
-  const data = uint16ArrayLittleEndian([
+  const data = uint16ArrayBigEndian([
     header.ID
   , encodeFlags(header.flags)
   , questionsCount

@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayLittleEndian, readUint16LittleEndian } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian } from './utils.js'
 
 export interface IQuestion {
   QNAME: string // 变长, 用DNS名称表示法表示的域名
@@ -14,7 +14,7 @@ export function encodeQuestion(
 ): ArrayBuffer {
   return concatBuffers([
     encodeDomainName(question.QNAME, byteOffset, messageCompressionDict)
-  , uint16ArrayLittleEndian([question.QTYPE, question.QCLASS]).buffer
+  , uint16ArrayBigEndian([question.QTYPE, question.QCLASS]).buffer
   ])
 }
 

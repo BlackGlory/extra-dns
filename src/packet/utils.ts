@@ -66,7 +66,7 @@ export function uint8Array(array: ArrayLike<number>): Uint8Array {
   return new Uint8Array(array)
 }
 
-export function uint16ArrayLittleEndian(
+export function uint16ArrayBigEndian(
   array: ArrayLike<number>
 ): Uint16Array<ArrayBuffer> {
   const data = new Uint16Array(array.length)
@@ -77,13 +77,13 @@ export function uint16ArrayLittleEndian(
   ; i < array.length
   ; i++, byteOffset += Uint16Array.BYTES_PER_ELEMENT
   ) {
-    view.setUint16(byteOffset, array[i])
+    view.setUint16(byteOffset, array[i], false)
   }
 
   return data
 }
 
-export function uint32ArrayLittleEndian(
+export function uint32ArrayBigEndian(
   array: ArrayLike<number>
 ): Uint32Array<ArrayBuffer> {
   const data = new Uint32Array(array.length)
@@ -94,7 +94,7 @@ export function uint32ArrayLittleEndian(
   ; i < array.length
   ; i++, byteOffset += Uint32Array.BYTES_PER_ELEMENT
   ) {
-    view.setUint32(byteOffset, array[i])
+    view.setUint32(byteOffset, array[i], false)
   }
 
   return data

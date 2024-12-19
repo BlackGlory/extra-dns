@@ -1,6 +1,6 @@
 import { isntUndefined } from 'extra-utils'
 import { decodeASCII, encodeASCII } from './ascii.js'
-import { concatBuffers, uint16ArrayLittleEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
 
 // DNS名称表示法(DNS Name Notation):
 // 域名中用点分隔开的组件被称为标签.
@@ -31,7 +31,7 @@ export function encodeDomainName(
 
     const pointer = messageCompressionDict.get(key)
     if (isntUndefined(pointer)) {
-      buffers.push(uint16ArrayLittleEndian([pointer | (0b11 << 14)]).buffer)
+      buffers.push(uint16ArrayBigEndian([pointer | (0b11 << 14)]).buffer)
 
       return concatBuffers(buffers)
     } else {
