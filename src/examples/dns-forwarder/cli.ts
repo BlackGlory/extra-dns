@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { assert } from '@blackglory/errors'
+import { assert } from '@blackglory/prelude'
 import { startDNSForwarder } from './dns-forwarder.js'
 import { parseServerInfo } from './parse-server-info.js'
 

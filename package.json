@@ -58,7 +58,6 @@
     "extra-logger": "^0.7.2",
     "extra-promise": "^7.0.0",
     "extra-utils": "^5.17.0",
-    "iterable-operator": "^5.1.0",
     "justypes": "^4.4.1"
   }
 }
