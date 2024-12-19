@@ -1,43 +1,40 @@
 import dgram from 'dgram'
-import dnsPacket, { Packet } from 'dns-packet'
 import { Emitter } from '@blackglory/structures'
-import { isntUndefined } from '@blackglory/prelude'
+import { decodePacket, encodePacket, IPacket, QR } from './packet/index.js'
 
 export class DNSServer extends Emitter<{
-  message: [
-    query: Packet
-  , reply: (response: Packet) => Promise<void>
+  query: [
+    query: IPacket
+  , respond: (response: IPacket) => Promise<void>
   ]
 }> {
-  private socket = dgram.createSocket('udp4')
-
-  constructor(private host: string, private port: number) {
+  constructor(
+    private host: string
+  , private port: number
+  , private socket: dgram.Socket = dgram.createSocket('udp4')
+  ) {
     super()
 
     this.socket.on('message', (message, remoteInfo) => {
-      const packet = dnsPacket.decode(message)
+      const packet = decodePacket(message.buffer)
 
-      if (isntUndefined(packet.id) && packet.type === 'query') {
-        this.emit(
-          'message'
-        , packet
-        , packet => {
-            return new Promise<void>((resolve, reject) => {
-              this.socket.send(
-                dnsPacket.encode(packet)
-              , remoteInfo.port
-              , remoteInfo.address
-              , err => {
-                  if (err) {
-                    reject(err)
-                  } else {
-                    resolve()
-                  }
+      if (packet.header.flags.QR === QR.Query) {
+        this.emit('query', packet, packet => {
+          return new Promise<void>((resolve, reject) => {
+            this.socket.send(
+              new Uint8Array(encodePacket(packet))
+            , remoteInfo.port
+            , remoteInfo.address
+            , err => {
+                if (err) {
+                  reject(err)
+                } else {
+                  resolve()
                 }
-              )
-            })
-          }
-        )
+              }
+            )
+          })
+        })
       }
     })
   }

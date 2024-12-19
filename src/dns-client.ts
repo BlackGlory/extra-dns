@@ -1,23 +1,27 @@
 import dgram from 'dgram'
-import dnsPacket, { Packet } from 'dns-packet'
-import { assert, go, isntUndefined } from '@blackglory/prelude'
+import { assert, go } from '@blackglory/prelude'
 import { Deferred } from 'extra-promise'
 import { withAbortSignal } from 'extra-abort'
+import { decodePacket, encodePacket, IPacket, QR } from './packet/index.js'
 
 interface IPending {
   users: number
-  readonly deferred: Deferred<Packet>
+  readonly deferred: Deferred<IPacket>
 }
 
-export class DNSResolver {
+export class DNSClient {
   private pendings = new Map<number, IPending>()
-  private socket = dgram.createSocket('udp4')
 
-  constructor(private host: string, private port: number) {
+  constructor(
+    private host: string
+  , private port: number
+  , private socket: dgram.Socket = dgram.createSocket('udp4')
+  ) {
     this.socket.on('message', message => {
-      const packet = dnsPacket.decode(message)
-      if (isntUndefined(packet.id) && packet.type === 'response') {
-        const pending = this.pendings.get(packet.id)
+      const packet = decodePacket(message.buffer)
+
+      if (packet.header.flags.QR === QR.Response) {
+        const pending = this.pendings.get(packet.header.id)
         if (pending) {
           pending.deferred.resolve(packet)
         }
@@ -26,15 +30,14 @@ export class DNSResolver {
   }
 
   async resolve(
-    query: Packet
+    query: IPacket
   , signal?: AbortSignal
-  ): Promise<Packet> {
+  ): Promise<IPacket> {
     signal?.throwIfAborted()
 
-    assert(query.type === 'query')
+    assert(query.header.flags.QR === QR.Query)
 
-    const id = query.id
-    assert(isntUndefined(id))
+    const id = query.header.id
 
     const pending: IPending = go(() => {
       const pending = this.pendings.get(id)
@@ -42,7 +45,7 @@ export class DNSResolver {
         return pending
       } else {
         const pending = {
-          deferred: new Deferred<Packet>()
+          deferred: new Deferred<IPacket>()
         , users: 0
         }
         this.pendings.set(id, pending)
@@ -54,8 +57,10 @@ export class DNSResolver {
     try {
       return await withAbortSignal(signal, async () => {
         await new Promise<void>((resolve, reject) => {
+          const buffer = encodePacket(query)
+
           this.socket.send(
-            dnsPacket.encode(query)
+            new Uint8Array(buffer)
           , this.port
           , this.host
           , err => {
