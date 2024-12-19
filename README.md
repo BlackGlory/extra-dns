@@ -31,6 +31,52 @@ async function startDNSForwarder({ local, remote }: {
 ```
 
 ## API
+```ts
+interface IPacket {
+  header: IHeader
+  questions: IQuestion[]
+  answers: IResourceRecord[]
+  authorityRecords: IResourceRecord[]
+  additionalRecords: IResourceRecord[]
+}
+
+interface IHeader {
+  id: number
+  flags: IFlags
+}
+
+interface IQuestion {
+  NAME: string
+  TYPE: number
+  CLASS: number
+}
+
+interface IResourceRecord {
+  NAME: string
+  TYPE: number
+  CLASS: number
+  TTL: number
+  RDATA: ArrayBufferLike
+}
+
+interface IFlags {
+  QR: QR
+  OPCODE: number
+  AA: number
+  TC: number
+  RD: number
+  RA: number
+  Z: number
+  RCODE: number
+}
+
+enum QR { /*...*/ }
+enum CLASS { /*...*/ }
+enum TYPE { /*...*/ }
+enum OpCode { /* ... */ }
+enum RCODE { /* ... */ }
+```
+
 ### DNSServer
 ```ts
 import { Emitter } from '@blackglory/structures'

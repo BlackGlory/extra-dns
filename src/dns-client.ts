@@ -2,7 +2,8 @@ import dgram from 'dgram'
 import { assert, go } from '@blackglory/prelude'
 import { Deferred } from 'extra-promise'
 import { withAbortSignal } from 'extra-abort'
-import { decodePacket, encodePacket, IPacket, QR } from './packet/index.js'
+import { IPacket, QR } from './packet/index.js'
+import { decodePacket, encodePacket } from './packet/packet.js'
 
 interface IPending {
   users: number

@@ -1,6 +1,7 @@
 import dgram from 'dgram'
 import { Emitter } from '@blackglory/structures'
-import { decodePacket, encodePacket, IPacket, QR } from './packet/index.js'
+import { IPacket, QR } from './packet/index.js'
+import { decodePacket, encodePacket } from './packet/packet.js'
 
 export class DNSServer extends Emitter<{
   query: [
