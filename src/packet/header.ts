@@ -2,7 +2,7 @@ import { decodeFlags, encodeFlags, IFlags } from './flags.js'
 import { uint16ArrayLittleEndian, readUint16LittleEndian } from './utils.js'
 
 export interface IHeader {
-  id: number // 2 bytes, 16 bits
+  ID: number // 2 bytes, 16 bits
   flags: IFlags // 2 bytes, 16 bits
   // QDCOUNT: number // 2 bytes, 16 bits
   // ANCOUNT: number // 2 bytes, 16 bits
@@ -18,7 +18,7 @@ export function encodeHeader(
 , additionalRecordsCount: number
 ): ArrayBuffer {
   const data = uint16ArrayLittleEndian([
-    header.id
+    header.ID
   , encodeFlags(header.flags)
   , questionsCount
   , answersCount
@@ -50,7 +50,7 @@ export function decodeHeader(buffer: ArrayBufferLike): {
   byteOffset += 6 * Uint16Array.BYTES_PER_ELEMENT
 
   const header: IHeader = {
-    id
+    ID: id
   , flags: decodeFlags(flags)
   }
 

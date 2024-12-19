@@ -22,7 +22,7 @@ export class DNSClient {
       const packet = decodePacket(message.buffer)
 
       if (packet.header.flags.QR === QR.Response) {
-        const pending = this.pendings.get(packet.header.id)
+        const pending = this.pendings.get(packet.header.ID)
         if (pending) {
           pending.deferred.resolve(packet)
         }
@@ -38,7 +38,7 @@ export class DNSClient {
 
     assert(query.header.flags.QR === QR.Query)
 
-    const id = query.header.id
+    const id = query.header.ID
 
     const pending: IPending = go(() => {
       const pending = this.pendings.get(id)

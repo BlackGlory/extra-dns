@@ -41,14 +41,14 @@ interface IPacket {
 }
 
 interface IHeader {
-  id: number
+  ID: number
   flags: IFlags
 }
 
 interface IQuestion {
-  NAME: string
-  TYPE: number
-  CLASS: number
+  QNAME: string
+  QTYPE: number
+  QCLASS: number
 }
 
 interface IResourceRecord {
@@ -73,7 +73,7 @@ interface IFlags {
 enum QR { /*...*/ }
 enum CLASS { /*...*/ }
 enum TYPE { /*...*/ }
-enum OpCode { /* ... */ }
+enum OPCODE { /* ... */ }
 enum RCODE { /* ... */ }
 ```
 

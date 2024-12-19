@@ -118,7 +118,7 @@ export enum TYPE {
 /**
  * @external https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-5
  */
-export enum OpCode {
+export enum OPCODE {
   Query = 0
 , IQuery = 1
 , Status = 2
