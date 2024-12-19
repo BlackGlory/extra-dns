@@ -6,23 +6,25 @@
     "dns"
   ],
   "files": [
-    "src",
-    "lib"
+    "lib",
+    "src"
   ],
   "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "engines": {
     "node": ">=18.17.0"
   },
+  "sideEffects": false,
   "repository": "git@github.com:BlackGlory/extra-dns.git",
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
   "scripts": {
     "prepare": "ts-patch install -s",
-    "deduplicate": "yarn-deduplicate",
-    "prepublishOnly": "run-s prepare clean build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "vitest --run --passWithNoTests",
-    "clean": "rimraf lib dist",
+    "prepublishOnly": "run-s prepare clean build",
+    "clean": "rimraf lib",
     "build": "tsc --project tsconfig.build.json",
     "release": "standard-version",
     "example:dns-forwarder": "tsx examples/dns-forwarder/cli.ts"
