@@ -76,7 +76,6 @@ export function decodeDomainName(
       const { domainName } = decodeDomainName(buffer, targetByteOffset)
 
       const targetLabels = domainName.split('.')
-      if (targetLabels.length === 1) targetLabels.length = 0
 
       labels.push(...targetLabels)
       byteOffset += Uint16Array.BYTES_PER_ELEMENT
