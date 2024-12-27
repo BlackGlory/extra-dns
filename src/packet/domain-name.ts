@@ -2,7 +2,7 @@ import { isntUndefined } from 'extra-utils'
 import { decodeASCII, encodeASCII } from './ascii.js'
 import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
 
-// DNS名称表示法(DNS Name Notation):
+// 适用于类型为domain-name的字段的DNS名称表示法(DNS Name Notation):
 // 域名中用点分隔开的组件被称为标签.
 // 编码格式为[标签长度, ASCII编码的标签], 以0长度的标签作为终结符.
 // 例子: `www.domain.com`将编码为`3www6domain3com0`.
@@ -21,6 +21,7 @@ export function encodeDomainName(
   domainName: string
 , byteOffset: number
 , messageCompressionDict: Map<string, number>
+, compression: boolean
 ): ArrayBuffer {
   const labels = domainName.split('.')
   if (labels.length === 1) labels.length = 0
@@ -29,23 +30,25 @@ export function encodeDomainName(
   for (let i = 0; i < labels.length; i++) {
     const key = labels.slice(i).join('.')
 
-    const pointer = messageCompressionDict.get(key)
-    if (isntUndefined(pointer)) {
-      buffers.push(uint16ArrayBigEndian([pointer | (0b11 << 14)]).buffer)
+    if (compression) {
+      const pointer = messageCompressionDict.get(key)
+      if (isntUndefined(pointer)) {
+        buffers.push(uint16ArrayBigEndian([pointer | (0b11 << 14)]).buffer)
 
-      return concatBuffers(buffers)
-    } else {
-      messageCompressionDict.set(key, byteOffset)
-
-      const label = labels[i]
-
-      buffers.push(uint8Array([label.length]).buffer)
-      byteOffset++
-
-      const buffer = encodeASCII(label)
-      buffers.push(buffer)
-      byteOffset += buffer.byteLength
+        return concatBuffers(buffers)
+      }
     }
+
+    messageCompressionDict.set(key, byteOffset)
+
+    const label = labels[i]
+
+    buffers.push(uint8Array([label.length]).buffer)
+    byteOffset++
+
+    const buffer = encodeASCII(label)
+    buffers.push(buffer)
+    byteOffset += buffer.byteLength
   }
   buffers.push(uint8Array([0]).buffer)
 

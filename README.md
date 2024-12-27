@@ -51,12 +51,26 @@ interface IQuestion {
   QCLASS: number
 }
 
-interface IResourceRecord {
+interface IResourceRecord<Type extends TYPE = number> {
   NAME: string
   TYPE: number
   CLASS: number
   TTL: number
   RDATA: ArrayBufferLike
+
+  /**
+   * `rdata` has higher priority than `RDATA`
+   */
+  rdata:
+  | CNAME_RDATA
+  | MX_RDATA
+  | NS_RDATA
+  | PTR_RDATA
+  | SOA_RDATA
+  | AFSDB_RDATA
+  | NAPTR_RDATA
+  | SRV_RDATA
+  | null
 }
 
 interface IFlags {
@@ -99,5 +113,110 @@ class DNSClient {
   constructor(host: string, port: number, socket?: dgram.Socket)
 
   resolve(query: Packet, signal?: AbortSignal): Promise<Packet>
+}
+```
+
+### RDATA
+#### CNAME_RDATA
+```ts
+class CNAME_RDATA {
+  constructor(
+    public CNAME: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): CNAME_RDATA
+}
+```
+
+#### MX_RDATA
+```ts
+class MX_RDATA {
+  constructor(
+    public PREFERENCE: number
+  , public EXCHANGE: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): MX_RDATA
+}
+```
+
+#### NS_RDATA
+```ts
+class NS_RDATA {
+  constructor(
+    public NSDNAME: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): NS_RDATA
+}
+```
+
+#### PTR_RDATA
+```ts
+class PTR_RDATA {
+  constructor(
+    public PTRDNAME: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): PTR_RDATA
+}
+```
+
+#### SOA_RDATA
+```ts
+class SOA_RDATA {
+  constructor(
+    public MNAME: string
+  , public RNAME: string
+  , public SERIAL: number
+  , public REFRESH: number
+  , public RETRY: number
+  , public EXPIRE: number
+  , public MINIMUM: number
+  ) {}
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): SOA_RDATA
+}
+```
+
+#### AFSDB_RDATA
+```ts
+class AFSDB_RDATA {
+  constructor(
+    public SUBTYPE: number
+  , public HOSTNAME: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): AFSDB_RDATA
+}
+```
+
+#### NAPTR_RDATA
+```ts
+class NAPTR_RDATA {
+  constructor(
+    public ORDER: number
+  , public PREFERENCE: number
+  , public FLAGS: string
+  , public SERVICES: string
+  , public REGEXP: string
+  , public REPLACEMENT: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): NAPTR_RDATA
+}
+```
+
+#### SRV_RDATA
+```ts
+class SRV_RDATA {
+  constructor(
+    public PRIORITY: number
+  , public WEIGHT: number
+  , public PORT: number
+  , public TARGET: string
+  ) {}
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): SRV_RDATA
 }
 ```

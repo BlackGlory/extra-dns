@@ -2,7 +2,7 @@ import { decodeDomainName, encodeDomainName } from './domain-name.js'
 import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian } from './utils.js'
 
 export interface IQuestion {
-  QNAME: string // 变长, 用DNS名称表示法表示的域名
+  QNAME: string // domain-name
   QTYPE: number // 2 bytes
   QCLASS: number // 2 bytes
 }
@@ -13,7 +13,7 @@ export function encodeQuestion(
 , messageCompressionDict: Map<string, number>
 ): ArrayBuffer {
   return concatBuffers([
-    encodeDomainName(question.QNAME, byteOffset, messageCompressionDict)
+    encodeDomainName(question.QNAME, byteOffset, messageCompressionDict, true)
   , uint16ArrayBigEndian([question.QTYPE, question.QCLASS]).buffer
   ])
 }
