@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/BlackGlory/extra-dns/compare/v0.1.3...v0.1.4) (2024-12-28)
+
+
+### Features
+
+* **rdata:** add `A_RDATA`, `AAAA_RDATA` ([9d57745](https://github.com/BlackGlory/extra-dns/commit/9d57745d8a1cac135cf89394629c9bf55554a14f))
+
+
+### Bug Fixes
+
+* parse well-known RDATA ([fe2e174](https://github.com/BlackGlory/extra-dns/commit/fe2e17444ee7e2295b7c522bc6cd0b47e5cc4af9))
+
 ### [0.1.3](https://github.com/BlackGlory/extra-dns/compare/v0.1.2...v0.1.3) (2024-12-25)
 
 
