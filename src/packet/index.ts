@@ -4,7 +4,7 @@ export type { IHeader } from './header.js'
 export type { IFlags } from './flags.js'
 export type { IQuestion } from './question.js'
 export type { IResourceRecord } from './resource-record.js'
-export type {
+export {
   A_RDATA
 , AAAA_RDATA
 , CNAME_RDATA
