@@ -1,6 +1,6 @@
 import { isntUndefined } from 'extra-utils'
-import { decodeASCII, encodeASCII } from './ascii.js'
 import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
+import { decodeCharacterString, encodeCharacterString } from './character-string.js'
 
 // 适用于类型为domain-name的字段的DNS名称表示法(DNS Name Notation):
 // 域名中用点分隔开的组件被称为标签.
@@ -43,10 +43,7 @@ export function encodeDomainName(
 
     const label = labels[i]
 
-    buffers.push(uint8Array([label.length]).buffer)
-    byteOffset++
-
-    const buffer = encodeASCII(label)
+    const buffer = encodeCharacterString(label)
     buffers.push(buffer)
     byteOffset += buffer.byteLength
   }
@@ -86,12 +83,12 @@ export function decodeDomainName(
       break
     }
 
-    const length = firstByte
-    byteOffset++
-
-    const label = decodeASCII(buffer.slice(byteOffset, byteOffset + length))
+    const {
+      characterString: label
+    , newByteOffset
+    } = decodeCharacterString(buffer, byteOffset)
     labels.push(label)
-    byteOffset += length
+    byteOffset = newByteOffset
   }
 
   const domainName = labels.join('.')
