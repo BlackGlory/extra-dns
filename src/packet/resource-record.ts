@@ -3,7 +3,7 @@ import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16Li
 import { TYPE } from './constants.js'
 import { isntNull } from 'extra-utils'
 import { go } from '@blackglory/prelude'
-import { AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA, NAPTR_RDATA, NS_RDATA, PTR_RDATA, SOA_RDATA, SRV_RDATA } from './rdata.js'
+import { A_RDATA, AAAA_RDATA, AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA, NAPTR_RDATA, NS_RDATA, PTR_RDATA, SOA_RDATA, SRV_RDATA } from './rdata.js'
 
 // 消息压缩的存在使得DNS服务器在面对新的资源记录类型时丧失兼容性(由于RDATA无法解析, 指针将指向错误的位置),
 // RFC 3597定义了面对未知DNS资源记录类型时应采取的标准做法:
@@ -18,6 +18,18 @@ import { AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA, NAPTR_RDATA, NS_RDAT
 // 其中RP, RT, SIG, PX, NXT被IANA认为是过时的资源记录类型:
 // https://en.wikipedia.org/wiki/List_of_DNS_record_types#Obsolete_record_types
 
+type RDATA =
+| A_RDATA
+| AAAA_RDATA
+| CNAME_RDATA
+| MX_RDATA
+| NS_RDATA
+| PTR_RDATA
+| SOA_RDATA
+| AFSDB_RDATA
+| NAPTR_RDATA
+| SRV_RDATA
+
 export interface IResourceRecord {
   NAME: string // domain-name
   TYPE: number // 2 bytes
@@ -29,16 +41,7 @@ export interface IResourceRecord {
   /**
    * `rdata` has higher priority than `RDATA`
    */
-  rdata:
-  | CNAME_RDATA
-  | MX_RDATA
-  | NS_RDATA
-  | PTR_RDATA
-  | SOA_RDATA
-  | AFSDB_RDATA
-  | NAPTR_RDATA
-  | SRV_RDATA
-  | null
+  rdata: RDATA | null
 }
 
 export function encodeResourceRecord(
@@ -102,17 +105,10 @@ export function decodeResourceRecord(
   byteOffset += 1 * Uint16Array.BYTES_PER_ELEMENT
 
   const RDATA = buffer.slice(byteOffset, byteOffset + RDLENGTH)
-  const rdataDecoder: IRDATADecoder<
-  | CNAME_RDATA
-  | MX_RDATA
-  | NS_RDATA
-  | PTR_RDATA
-  | SOA_RDATA
-  | AFSDB_RDATA
-  | NAPTR_RDATA
-  | SRV_RDATA
-  > | undefined = go(() => {
+  const rdataDecoder: IRDATADecoder<RDATA> | undefined = go(() => {
     switch (_TYPE) {
+      case TYPE.A: return A_RDATA
+      case TYPE.AAAA: return AAAA_RDATA
       case TYPE.CNAME: return CNAME_RDATA
       case TYPE.MX: return MX_RDATA
       case TYPE.NS: return NS_RDATA

@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian, uint8Array, readUint8 } from './utils.js'
 import { decodeCharacterString, encodeCharacterString } from './character-string.js'
 import { go } from '@blackglory/prelude'
 
@@ -12,6 +12,48 @@ interface IRDATAEncoder {
     byteOffset: number
   , messageCompressionDict: Map<string, number>
   ): ArrayBufferLike
+}
+
+// RFC 1035
+export class A_RDATA implements IRDATAEncoder {
+  constructor(
+    public ADDRESS: string // 4 bytes, 32 bits
+  ) {}
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): A_RDATA {
+    const ADDRESS = readUint8(buffer, byteOffset, 4).join('.')
+
+    return new A_RDATA(ADDRESS)
+  }
+
+  _encode(): ArrayBufferLike {
+    return uint8Array(
+      this.ADDRESS
+        .split('.')
+        .map(x => Number.parseInt(x, 10))
+    ).buffer
+  }
+}
+
+// RFC 3596
+export class AAAA_RDATA implements IRDATAEncoder {
+  constructor(
+    public ADDRESS: string // 16 bytes, 128 bits
+  ) {}
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): AAAA_RDATA {
+    const ADDRESS = readUint16LittleEndian(buffer, byteOffset, 8).join(':')
+
+    return new AAAA_RDATA(ADDRESS)
+  }
+
+  _encode(): ArrayBufferLike {
+    return uint16ArrayBigEndian(
+      this.ADDRESS
+        .split(':')
+        .map(x => Number.parseInt(x, 16))
+    ).buffer
+  }
 }
 
 // RFC 1035

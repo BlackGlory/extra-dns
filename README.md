@@ -62,6 +62,8 @@ interface IResourceRecord<Type extends TYPE = number> {
    * `rdata` has higher priority than `RDATA`
    */
   rdata:
+  | A_RDATA
+  | AAAA_RDATA
   | CNAME_RDATA
   | MX_RDATA
   | NS_RDATA
@@ -117,6 +119,28 @@ class DNSClient {
 ```
 
 ### RDATA
+#### A_RDATA
+```ts
+class A_RDATA {
+  constructor(
+    public ADDRESS: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): A_RDATA
+}
+```
+
+#### AAAA_RDATA
+```ts
+class AAAA_RDATA {
+  constructor(
+    public ADDRESS: string
+  )
+
+  static decode(buffer: ArrayBufferLike, byteOffset: number): AAAA_RDATA
+}
+```
+
 #### CNAME_RDATA
 ```ts
 class CNAME_RDATA {
