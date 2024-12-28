@@ -1,7 +1,6 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
 import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian } from './utils.js'
 import { TYPE } from './constants.js'
-import { isntNull } from 'extra-utils'
 import { go } from '@blackglory/prelude'
 import { A_RDATA, AAAA_RDATA, AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA, NAPTR_RDATA, NS_RDATA, PTR_RDATA, SOA_RDATA, SRV_RDATA } from './rdata.js'
 
@@ -41,7 +40,7 @@ export interface IResourceRecord {
   /**
    * `rdata` has higher priority than `RDATA`
    */
-  rdata: RDATA | null
+  rdata?: RDATA | null
 }
 
 export function encodeResourceRecord(
@@ -66,7 +65,7 @@ export function encodeResourceRecord(
   // RLENGTH
   byteOffset += 1 * Uint16Array.BYTES_PER_ELEMENT
 
-  const rdata = isntNull(resourceRecord.rdata)
+  const rdata = resourceRecord.rdata
     ? resourceRecord.rdata._encode(byteOffset, messageCompressionDict)
     : resourceRecord.RDATA
   byteOffset += rdata.byteLength

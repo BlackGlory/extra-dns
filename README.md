@@ -61,7 +61,7 @@ interface IResourceRecord<Type extends TYPE = number> {
   /**
    * `rdata` has higher priority than `RDATA`
    */
-  rdata:
+  rdata?:
   | A_RDATA
   | AAAA_RDATA
   | CNAME_RDATA
