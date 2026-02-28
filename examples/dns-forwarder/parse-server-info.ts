@@ -1,4 +1,5 @@
-import { assert, go, isntNaN, isString } from '@blackglory/prelude'
+import { isString } from '@blackglory/prelude'
+import { parsePort } from './parse-port.js'
 
 export interface IServerInfo {
   host: string
@@ -8,14 +9,9 @@ export interface IServerInfo {
 export function parseServerInfo(server: string): IServerInfo {
   const [host, portString] = server.split(':') as [string, string | undefined]
 
-  const port = go(() => {
-    if (isString(portString)) {
-      const port = Number.parseInt(portString)
-      assert(isntNaN(port))
-
-      return port
-    }
-  })
+  const port = isString(portString)
+             ? parsePort(portString)
+             : undefined
 
   return {
     host

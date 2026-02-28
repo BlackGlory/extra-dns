@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { assert } from '@blackglory/prelude'
 import { startDNSForwarder } from './dns-forwarder.js'
 import { parseServerInfo } from './parse-server-info.js'
+import { parsePort } from './parse-port.js'
 
 program
   .option('--port [port]', '', '53')
@@ -28,8 +28,7 @@ program
 function getOptions(): { port: number } {
   const opts = program.opts<{ port: string }>()
 
-  assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
-  const port: number = Number.parseInt(opts.port, 10)
+  const port = parsePort(opts.port)
 
   return { port }
 }
