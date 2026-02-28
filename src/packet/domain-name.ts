@@ -1,6 +1,7 @@
 import { isntUndefined } from 'extra-utils'
 import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
 import { decodeCharacterString, encodeCharacterString } from './character-string.js'
+import { assert } from '@blackglory/prelude'
 
 // 适用于类型为domain-name的字段的DNS名称表示法(DNS Name Notation):
 // 域名中用点分隔开的组件被称为标签.
@@ -58,6 +59,8 @@ export function decodeDomainName(
   domainName: string
   newByteOffset: number
 } {
+  const initialByteOffset = byteOffset
+
   const labels: string[] = []
 
   while (byteOffset < buffer.byteLength) {
@@ -72,6 +75,8 @@ export function decodeDomainName(
       const [pointer] = readUint16LittleEndian(buffer, byteOffset)
 
       const targetByteOffset = pointer & ~(0b11 << 14)
+      assert(targetByteOffset < initialByteOffset)
+
       const { domainName } = decodeDomainName(buffer, targetByteOffset)
 
       const targetLabels = domainName.split('.')
@@ -86,6 +91,7 @@ export function decodeDomainName(
       characterString: label
     , newByteOffset
     } = decodeCharacterString(buffer, byteOffset)
+
     labels.push(label)
     byteOffset = newByteOffset
   }
