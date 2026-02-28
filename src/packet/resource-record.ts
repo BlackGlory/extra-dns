@@ -6,13 +6,13 @@ import { A_RDATA, AAAA_RDATA, AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA,
 
 // 消息压缩的存在使得DNS服务器在面对新的资源记录类型时丧失兼容性(由于RDATA无法解析, 指针将指向错误的位置),
 // RFC 3597定义了面对未知DNS资源记录类型时应采取的标准做法:
-// DNS服务器应该仅对知名的资源记录类型使用消息压缩, "知名"被定义为该资源记录类型被写在在RFC 1035里.
+// DNS服务器不可(MUST NOT)对非知名的资源记录类型使用消息压缩,
+// "知名"的定义是"该资源记录类型被写在RFC 1035里".
 
 // 排除掉RFC 1035中实验性的和过时的资源记录类型, 以及RDATA中不包含域名字段的资源记录类型,
-// 剩余的资源记录类型为:
-// CNAME, MX, NS, PTR, SOA
+// 剩余的资源记录类型为: CNAME, MX, NS, PTR, SOA.
 
-// RFC 3597还要求实现这些资源记录类型的解压:
+// RFC 3597还表示服务器应该(SHOULD)实现这些资源记录类型的解压:
 // RP, AFSDB, RT, SIG, PX, NXT, NAPTR, SRV
 // 其中RP, RT, SIG, PX, NXT被IANA认为是过时的资源记录类型:
 // https://en.wikipedia.org/wiki/List_of_DNS_record_types#Obsolete_record_types
