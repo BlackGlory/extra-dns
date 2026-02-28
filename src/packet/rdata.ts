@@ -1,7 +1,7 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
 import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian, uint8Array, readUint8 } from './utils.js'
 import { decodeCharacterString, encodeCharacterString } from './character-string.js'
-import { go } from '@blackglory/prelude'
+import { go, toArray } from '@blackglory/prelude'
 
 export interface IRDATADecoder<T> {
   decode(buffer: ArrayBufferLike, byteOffset: number): T
@@ -42,7 +42,9 @@ export class AAAA_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): AAAA_RDATA {
-    const ADDRESS = readUint16LittleEndian(buffer, byteOffset, 8).join(':')
+    const ADDRESS = toArray(readUint16LittleEndian(buffer, byteOffset, 8))
+      .map(x => x.toString(16))
+      .join(':')
 
     return new AAAA_RDATA(ADDRESS)
   }
