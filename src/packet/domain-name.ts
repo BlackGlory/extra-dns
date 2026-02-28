@@ -24,7 +24,6 @@ export function encodeDomainName(
 , compression: boolean
 ): ArrayBuffer {
   const labels = domainName.split('.')
-  if (labels.length === 1) labels.length = 0
 
   const buffers: ArrayBufferLike[] = []
   for (let i = 0; i < labels.length; i++) {

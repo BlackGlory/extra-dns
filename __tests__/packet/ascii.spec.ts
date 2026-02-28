@@ -1,16 +1,17 @@
 import { test, expect } from 'vitest'
 import { encodeASCII, decodeASCII } from '@src/packet/ascii.js'
+import { uint8Array } from '@src/packet/utils.js'
 
 test('encodeASCII', () => {
   const text = '01'
 
   const result = encodeASCII(text)
 
-  expect(result).toStrictEqual(new Uint8Array([48, 49]).buffer)
+  expect(result).toStrictEqual(uint8Array([48, 49]).buffer)
 })
 
 test('decodeASCII', () => {
-  const buffer = new Uint8Array([48, 49]).buffer
+  const buffer = uint8Array([48, 49]).buffer
 
   const result = decodeASCII(buffer)
 
