@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian, uint8Array, readUint8 } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16BigEndian, readUint32BigEndian, uint8Array, readUint8 } from './utils.js'
 import { decodeCharacterString, encodeCharacterString } from './character-string.js'
 import { go, toArray } from '@blackglory/prelude'
 
@@ -42,7 +42,7 @@ export class AAAA_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): AAAA_RDATA {
-    const ADDRESS = toArray(readUint16LittleEndian(buffer, byteOffset, 8))
+    const ADDRESS = toArray(readUint16BigEndian(buffer, byteOffset, 8))
       .map(x => x.toString(16))
       .join(':')
 
@@ -86,7 +86,7 @@ export class MX_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): MX_RDATA {
-    const [PREFERENCE] = readUint16LittleEndian(buffer, byteOffset)
+    const [PREFERENCE] = readUint16BigEndian(buffer, byteOffset)
     byteOffset += 1 * Uint16Array.BYTES_PER_ELEMENT
 
     const EXCHANGE = decodeDomainName(buffer, byteOffset).domainName
@@ -187,7 +187,7 @@ export class SOA_RDATA implements IRDATAEncoder {
     , RETRY
     , EXPIRE
     , MINIMUM
-    ] = readUint32LittleEndian(buffer, byteOffset, 5)
+    ] = readUint32BigEndian(buffer, byteOffset, 5)
     byteOffset += 5 * Uint32Array.BYTES_PER_ELEMENT
 
     return new SOA_RDATA(
@@ -233,7 +233,7 @@ export class AFSDB_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): AFSDB_RDATA {
-    const [SUBTYPE] = readUint16LittleEndian(buffer, byteOffset)
+    const [SUBTYPE] = readUint16BigEndian(buffer, byteOffset)
     byteOffset += 1 * Uint16Array.BYTES_PER_ELEMENT
 
     const HOSTNAME = decodeDomainName(buffer, byteOffset).domainName
@@ -275,7 +275,7 @@ export class NAPTR_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): NAPTR_RDATA {
-    const [ORDER, PREFERENCE] = readUint16LittleEndian(buffer, byteOffset, 2)
+    const [ORDER, PREFERENCE] = readUint16BigEndian(buffer, byteOffset, 2)
     byteOffset += 2 * Uint16Array.BYTES_PER_ELEMENT
 
     const FLAGS = go(() => {
@@ -360,7 +360,7 @@ export class SRV_RDATA implements IRDATAEncoder {
   ) {}
 
   static decode(buffer: ArrayBufferLike, byteOffset: number): SRV_RDATA {
-    const [PRIORITY, WEIGHT, PORT] = readUint16LittleEndian(buffer, byteOffset, 3)
+    const [PRIORITY, WEIGHT, PORT] = readUint16BigEndian(buffer, byteOffset, 3)
     byteOffset += 3 * Uint16Array.BYTES_PER_ELEMENT
 
     const TARGET = decodeDomainName(buffer, byteOffset).domainName

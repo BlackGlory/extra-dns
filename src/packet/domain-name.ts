@@ -1,5 +1,5 @@
 import { isntUndefined } from 'extra-utils'
-import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian, readUint8, uint8Array } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, readUint16BigEndian, readUint8, uint8Array } from './utils.js'
 import { decodeCharacterString, encodeCharacterString } from './character-string.js'
 import { assert } from '@blackglory/prelude'
 
@@ -72,7 +72,7 @@ export function decodeDomainName(
     }
     
     if (firstByte >= (0b11 << 6)) {
-      const [pointer] = readUint16LittleEndian(buffer, byteOffset)
+      const [pointer] = readUint16BigEndian(buffer, byteOffset)
 
       const targetByteOffset = pointer & ~(0b11 << 14)
       assert(targetByteOffset < initialByteOffset)

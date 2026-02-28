@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16LittleEndian, readUint32LittleEndian } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, uint32ArrayBigEndian, readUint16BigEndian, readUint32BigEndian } from './utils.js'
 import { TYPE } from './constants.js'
 import { go } from '@blackglory/prelude'
 import { A_RDATA, AAAA_RDATA, AFSDB_RDATA, CNAME_RDATA, IRDATADecoder, MX_RDATA, NAPTR_RDATA, NS_RDATA, PTR_RDATA, SOA_RDATA, SRV_RDATA } from './rdata.js'
@@ -94,13 +94,13 @@ export function decodeResourceRecord(
   )
   byteOffset = newByteOffset
 
-  const [_TYPE, CLASS] = readUint16LittleEndian(buffer, byteOffset, 2)
+  const [_TYPE, CLASS] = readUint16BigEndian(buffer, byteOffset, 2)
   byteOffset += 2 * Uint16Array.BYTES_PER_ELEMENT
 
-  const [TTL] = readUint32LittleEndian(buffer, byteOffset)
+  const [TTL] = readUint32BigEndian(buffer, byteOffset)
   byteOffset += 1 * Uint32Array.BYTES_PER_ELEMENT
 
-  const [RDLENGTH] = readUint16LittleEndian(buffer, byteOffset)
+  const [RDLENGTH] = readUint16BigEndian(buffer, byteOffset)
   byteOffset += 1 * Uint16Array.BYTES_PER_ELEMENT
 
   const RDATA = buffer.slice(byteOffset, byteOffset + RDLENGTH)

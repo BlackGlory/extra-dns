@@ -24,7 +24,7 @@ export function readUint8(
   return new Uint8Array(buffer, byteOffset, length)
 }
 
-export function readUint16LittleEndian(
+export function readUint16BigEndian(
   buffer: ArrayBufferLike
 , byteOffset: number
 , length: number = 1
@@ -37,13 +37,13 @@ export function readUint16LittleEndian(
   ; i < data.length
   ; i++, byteOffset += Uint16Array.BYTES_PER_ELEMENT
   ) {
-    data[i] = view.getUint16(byteOffset)
+    data[i] = view.getUint16(byteOffset, false)
   }
 
   return data
 }
 
-export function readUint32LittleEndian(
+export function readUint32BigEndian(
   buffer: ArrayBufferLike
 , byteOffset: number
 , length: number = 1
@@ -56,7 +56,7 @@ export function readUint32LittleEndian(
   ; i < data.length
   ; i++, byteOffset += Uint32Array.BYTES_PER_ELEMENT
   ) {
-    data[i] = view.getUint32(byteOffset)
+    data[i] = view.getUint32(byteOffset, false)
   }
 
   return data

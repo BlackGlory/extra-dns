@@ -1,5 +1,5 @@
 import { decodeDomainName, encodeDomainName } from './domain-name.js'
-import { concatBuffers, uint16ArrayBigEndian, readUint16LittleEndian } from './utils.js'
+import { concatBuffers, uint16ArrayBigEndian, readUint16BigEndian } from './utils.js'
 
 export interface IQuestion {
   QNAME: string // domain-name
@@ -28,7 +28,7 @@ export function decodeQuestion(buffer: ArrayBufferLike, byteOffset: number): {
   )
   byteOffset = newByteOffset
 
-  const [TYPE, CLASS] = readUint16LittleEndian(buffer, byteOffset, 2)
+  const [TYPE, CLASS] = readUint16BigEndian(buffer, byteOffset, 2)
   byteOffset += 2 * Uint16Array.BYTES_PER_ELEMENT
 
   const question: IQuestion = { QNAME: NAME, QTYPE: TYPE, QCLASS: CLASS }
