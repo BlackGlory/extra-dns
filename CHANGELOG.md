@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/BlackGlory/extra-dns/compare/v0.1.6...v0.1.7) (2026-02-28)
+
+
+### Features
+
+* **dns-client:** add the `close`() method ([86eb261](https://github.com/BlackGlory/extra-dns/commit/86eb261e9ce4b31fc1de710c9414db072d3b903e))
+
+
+### Bug Fixes
+
+* **AAAA_RDATA:** ipv6 address format ([015a529](https://github.com/BlackGlory/extra-dns/commit/015a529cf0aa49186149797107930d43364b3702))
+* **encode-domain-name:** handle single label domain names ([7652d5b](https://github.com/BlackGlory/extra-dns/commit/7652d5be9ad6cd6af03ec6943748ff94cab96285))
+
 ### [0.1.6](https://github.com/BlackGlory/extra-dns/compare/v0.1.5...v0.1.6) (2024-12-28)
 
 
