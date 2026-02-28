@@ -114,6 +114,8 @@ class DNSServer extends Emitter<{
 class DNSClient {
   constructor(host: string, port: number, socket?: dgram.Socket)
 
+  close(): Promise<void>
+
   resolve(query: Packet, signal?: AbortSignal): Promise<Packet>
 }
 ```

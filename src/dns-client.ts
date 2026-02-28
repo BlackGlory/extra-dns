@@ -30,6 +30,16 @@ export class DNSClient {
     })
   }
 
+  async close(): Promise<void> {
+    await new Promise<void>(resolve => this.socket.close(resolve))
+
+    const error = new Error('The client is closed')
+    for (const pending of this.pendings.values()) {
+      pending.deferred.reject(error)
+    }
+    this.pendings.clear()
+  }
+
   async resolve(
     query: IPacket
   , signal?: AbortSignal
