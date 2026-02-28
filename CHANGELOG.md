@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/BlackGlory/extra-dns/compare/v0.1.7...v0.1.8) (2026-02-28)
+
+
+### Features
+
+* **decode-domain-name:** add an assertion for pointers ([753c970](https://github.com/BlackGlory/extra-dns/commit/753c970e445bd57d6262b7f4099b9b64ccc91ef8))
+
+
+### Bug Fixes
+
+* helper function names ([94daf8b](https://github.com/BlackGlory/extra-dns/commit/94daf8be3af0c549c30f5fafdad57f90cee30672))
+
 ### [0.1.7](https://github.com/BlackGlory/extra-dns/compare/v0.1.6...v0.1.7) (2026-02-28)
 
 
